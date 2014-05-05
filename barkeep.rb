@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'data_mapper'
 require 'do_sqlite3'
+require 'dm-sqlite-adapter'
 
 enable :sessions
 

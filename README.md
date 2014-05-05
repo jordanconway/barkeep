@@ -8,6 +8,7 @@ rubygems
 sinatra
 data_mapper
 do_sqlite3
+dm-sqlite-adapter
 
 usage:
 ruby barkeep.rb
