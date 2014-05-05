@@ -1,0 +1,12 @@
+<article><h1>Green = Full | Yellow = Partial | Red = Empty</h1></article>
+<% @boozebtl.each do |boozebtl| %>
+<article <%= 'class="full"' if boozebtl.ammount == "full" %><%= 'class="empty"' if boozebtl.ammount == "empty" %> <%= 'class="partial"' if boozebtl.ammount == "partial" %> >
+<p><%=h boozebtl.name %>
+<p><%=h boozebtl.size %>
+<p><a href="<%= boozebtl.saqurl %>"><%= boozebtl.saqurl %></a>
+<p>
+<span><a href="/<%= boozebtl.id %>">[view]</a></span>
+</p>
+</article>
+<% end %>
+

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf8">
+    <title><%= @title + ' | New' %></title>
+    <link href="/reset.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+    <hgroup>
+        <h1><a href="/">Barkeep!</a><h1>
+        <h2>Simple Booze inventory</h2>
+    </hgroup>
+    </header>
+<div id="main">
+    <%= yield %>
+</div>
+<footer>
+    <p><small>Brought to you by Jordan</small></p>
+</footer>
+</body>
+</html>
