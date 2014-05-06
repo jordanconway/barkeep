@@ -48,16 +48,17 @@ end
 
 post '/' do
     a = BoozeBottle.new
-    #a.name = params[:name]
-    #a.size= params[:size]
+    # grab the parameters from the :home erb form
     a.ammount = params[:ammount] 
     a.saqurl= params[:saqurl] 
+    # Open the saq.com page from saqurl
     page = Nokogiri::HTML(open(a.saqurl))
-    first,second =  page.css('div #content div div div div div.product-page-left div.product-description div.product-description-row1 div.product-description-title-type').text.strip.split(',')
-    title  =  page.css('div #content div div div div div.product-page-left div.product-description div.product-description-row1 h1.product-description-title').text.strip
-    a.name = title
-    a.type = first
-    a.size = second
+    # This div returns boozetype,bottlesize - split it and save the values
+    a.type,a.size = page.css('div #content div div div div div.product-page-left div.product-description 
+        div.product-description-row1 div.product-description-title-type').text.strip.split(',')
+    # This div returns the name of the product
+    a.name = page.css('div #content div div div div div.product-page-left div.product-description 
+        div.product-description-row1 h1.product-description-title').text.strip
     a.save
     session[:number] = a.id
     redirect to '/done'
@@ -75,7 +76,8 @@ get '/all' do
     erb :all
 end
 
-get '/:id' do 
+get '/:id' do
+    # For some reason I needed to turn this into an integer, it hasn't been a problem in other sinatra apps 
     @boozebtl = BoozeBottle.get!(params[:id].to_i)
     @title = "requested"
     erb :show
