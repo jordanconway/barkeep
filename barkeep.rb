@@ -5,7 +5,6 @@ require 'do_sqlite3'
 require 'dm-sqlite-adapter'
 require 'nokogiri'
 require 'open-uri'
-
 enable :sessions
 
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/barkeep.db")
@@ -39,7 +38,7 @@ helpers do
         @auth ||=  Rack::Auth::Basic::Request.new(request.env)
         @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['admin', 'admin']
     end
-
+    
 end
 
 get '/' do
@@ -54,8 +53,8 @@ post '/' do
     a.ammount = params[:ammount] 
     a.saqurl= params[:saqurl] 
     page = Nokogiri::HTML(open(a.saqurl))
-    first,second =  page.css('div #content div div div div div.product-page-left div.product-description div.product-description-row1 div.product-description-title-type').to_s().split(',')
-    title  =  page.css('div #content div div div div div.product-page-left div.product-description div.product-description-row1 h1.product-description-title')
+    first,second =  page.css('div #content div div div div div.product-page-left div.product-description div.product-description-row1 div.product-description-title-type').text.strip.split(',')
+    title  =  page.css('div #content div div div div div.product-page-left div.product-description div.product-description-row1 h1.product-description-title').text.strip
     a.name = title
     a.type = first
     a.size = second
@@ -76,8 +75,8 @@ get '/all' do
     erb :all
 end
 
-get '/:id' do
-    @boozebtl = BoozeBottle.get params[:id]
+get '/:id' do 
+    @boozebtl = BoozeBottle.get!(params[:id].to_i)
     @title = "requested"
     erb :show
 end
