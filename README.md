@@ -9,7 +9,6 @@ barkeep
 * data_mapper
 * do_sqlite3
 * dm-sqlite-adapter
-* dm-sqlite-adapter
 * nokogiri
 * open-uri
 
