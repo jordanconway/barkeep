@@ -38,7 +38,7 @@ helpers do
         @auth ||=  Rack::Auth::Basic::Request.new(request.env)
         @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['admin', 'admin']
     end
-    
+
 end
 
 get '/' do
@@ -49,15 +49,15 @@ end
 post '/' do
     a = BoozeBottle.new
     # grab the parameters from the :home erb form
-    a.ammount = params[:ammount] 
-    a.saqurl= params[:saqurl] 
+    a.ammount = params[:ammount]
+    a.saqurl= params[:saqurl]
     # Open the saq.com page from saqurl
     page = Nokogiri::HTML(open(a.saqurl))
     # This div returns boozetype,bottlesize - split it and save the values
-    a.type,a.size = page.css('div #content div div div div div.product-page-left div.product-description 
+    a.type,a.size = page.css('div #content div div div div div.product-page-left div.product-description
         div.product-description-row1 div.product-description-title-type').text.strip.split(',')
     # This div returns the name of the product
-    a.name = page.css('div #content div div div div div.product-page-left div.product-description 
+    a.name = page.css('div #content div div div div div.product-page-left div.product-description
         div.product-description-row1 h1.product-description-title').text.strip
     a.save
     session[:number] = a.id
@@ -77,7 +77,7 @@ get '/all' do
 end
 
 get '/:id' do
-    # For some reason I needed to turn this into an integer, it hasn't been a problem in other sinatra apps 
+    # For some reason I needed to turn this into an integer, it hasn't been a problem in other sinatra apps
     @boozebtl = BoozeBottle.get!(params[:id].to_i)
     @title = "requested"
     erb :show
