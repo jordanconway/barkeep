@@ -3,6 +3,8 @@ require 'sinatra'
 require 'data_mapper'
 require 'do_sqlite3'
 require 'dm-sqlite-adapter'
+require 'nokogiri'
+require 'open-uri'
 
 enable :sessions
 
@@ -11,10 +13,11 @@ DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/barkeep.db")
 class BoozeBottle
     include DataMapper::Resource
     property :id, Serial
-    property :name, Text, :required => true
-    property :size, Text, :required => true
+    property :name, Text
+    property :size, Text
+    property :type, Text
     property :ammount, Text, :required => true
-    property :saqurl, Text
+    property :saqurl, Text, :required => true
 end
 
 DataMapper.finalize.auto_upgrade!
@@ -46,10 +49,16 @@ end
 
 post '/' do
     a = BoozeBottle.new
-    a.name = params[:name]
-    a.size= params[:size]
+    #a.name = params[:name]
+    #a.size= params[:size]
     a.ammount = params[:ammount] 
     a.saqurl= params[:saqurl] 
+    page = Nokogiri::HTML(open(a.saqurl))
+    first,second =  page.css('div #content div div div div div.product-page-left div.product-description div.product-description-row1 div.product-description-title-type').to_s().split(',')
+    title  =  page.css('div #content div div div div div.product-page-left div.product-description div.product-description-row1 h1.product-description-title')
+    a.name = title
+    a.type = first
+    a.size = second
     a.save
     session[:number] = a.id
     redirect to '/done'

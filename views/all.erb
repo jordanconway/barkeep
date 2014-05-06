@@ -3,6 +3,7 @@
 <article <%= 'class="full"' if boozebtl.ammount == "full" %><%= 'class="empty"' if boozebtl.ammount == "empty" %> <%= 'class="partial"' if boozebtl.ammount == "partial" %> >
 <p><%=h boozebtl.name %>
 <p><%=h boozebtl.size %>
+<p><%=h boozebtl.ammount %>
 <p><a href="<%= boozebtl.saqurl %>"><%= boozebtl.saqurl %></a>
 <p>
 <span><a href="/<%= boozebtl.id %>">[view]</a></span>
